@@ -41,6 +41,8 @@ def make_env(cfg):
 
 class Workspace(object):
     def __init__(self, cfg):
+        self.p = True
+        self.trajectories = []
         self.work_dir = os.getcwd()
         print(f'workspace: {self.work_dir}')
 
@@ -135,6 +137,15 @@ class Workspace(object):
                 self.agent.update(self.replay_buffer, self.logger, self.step)
 
             next_obs, reward, done, _ = self.env.step(action)
+            # if self.p:
+            #     print(type(next_obs), type(reward), type(done))
+            #     self.p = False
+
+
+
+            self.trajectories.append([obs, action, reward, next_obs, done])
+            # experiment_recorder.add_transition(state, action, reward, next_state, done)
+            # experiment_recorder.save_trajectories(self.hyper_params["SIMPLE_STATES_SIZE"], fps=1,is_separated_file=True, is_save_utility=False, show_predicates=True)
 
             # allow infinite bootstrap
             done = float(done)
@@ -148,6 +159,10 @@ class Workspace(object):
             episode_step += 1
             self.step += 1
 
+        with open("something.pkl", 'wb') as f_traj:
+            pkl.dump(self.trajectories, f_traj, protocol=pkl.HIGHEST_PROTOCOL)
+        
+    
 
 @hydra.main(config_path='config/train.yaml', strict=True)
 def main(cfg):

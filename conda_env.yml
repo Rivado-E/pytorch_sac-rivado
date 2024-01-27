@@ -1,17 +1,18 @@
 name: pytorch_sac
 channels:
   - defaults
+  - conda-forge
 dependencies:
-  - python=3.6
+  - python=3.7
   - pytorch
   - cudatoolkit=9.2
   - absl-py
   - pyparsing
+  - dm_control
   - pip:
     - termcolor
-    - git+git://github.com/deepmind/dm_control.git
-    - git+git://github.com/denisyarats/dmc2gym.git
+    - git+https://github.com/denisyarats/dmc2gym.git
     - tb-nightly
     - imageio
     - imageio-ffmpeg
-    - git+git://github.com/facebookresearch/hydra@0.11_branch
+    - git+https://github.com/facebookresearch/hydra@0.11_branch
